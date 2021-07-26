@@ -1,0 +1,140 @@
+body {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+}
+
+main-content {
+  display: flex;
+}
+
+commits {
+  display: flex;
+  flex-direction: column;
+  border: 1px groove gray;
+  max-width: 350px;
+  min-height: 350px;
+}
+
+commits commit {
+  padding: 0 3px 2px 20px;
+  outline: none;
+  user-select: none;
+  cursor: default;
+}
+
+commits commit:first-child {
+  padding-left: 3px;
+  font-weight: 700;
+}
+
+commits commit.selected {
+  background: rgb(22, 72, 124);
+}
+
+commits commit message {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+info-panel {
+  display: flex;
+  flex-direction: column;
+  border: 1px groove gray;
+  width: 500px;
+}
+
+tree-header {
+  padding: 5px;
+  border-bottom: 1px groove gray;
+  font-weight: 700;
+}
+
+change-tree {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding-right: 25px;
+  user-select: none;
+}
+
+change-tree > :first-child {
+  margin-left: 3px;
+}
+
+change-tree div {
+  display: flex;
+  margin-left: 17px;
+}
+
+change-tree div caret {
+  height: 15px;
+  cursor: pointer;
+}
+
+change-tree div.folder {
+  margin-left: 1px;
+}
+
+change-tree div.hidden {
+  display: none;
+}
+
+change-tree div caret.hidden {
+  display: none;
+}
+
+change-tree div caret::before {
+  display: inline-block;
+  content: "▼";
+  margin-right: 5px;
+}
+
+change-tree div caret.inactive::before {
+  display: inline-block;
+  content: "▶";
+  margin-right: 4px;
+}
+
+change-tree node {
+  display: flex;
+  flex-direction: column;
+}
+
+change-tree node name {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+change-tree node name.M {
+  color: rgb(0, 196, 255);
+}
+
+change-tree node name.A {
+  color: rgb(17, 171, 49);
+}
+
+change-tree node name.D {
+  color: rgb(255, 124, 124);
+}
+
+change-tree node name.file {
+  cursor: pointer;
+}
+
+commit-info {
+  display: flex;
+  flex-direction: column;
+  height: 100px;
+  padding: 5px;
+  padding-right: 25px;
+  border: 1px groove gray;
+}
+
+commit-info message {
+  flex-grow: 1;
+  font-weight: 700;
+}

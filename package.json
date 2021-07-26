@@ -1,0 +1,48 @@
+{
+	"name": "git-push-preview",
+	"description": "Preview your commits before pushing to remote",
+	"version": "0.0.1",
+	"publisher": "dw1284",
+	"repository": "https://github.com/dw1284/git-push-preview",
+	"engines": {
+		"vscode": "^1.32.0"
+	},
+	"activationEvents": [
+		"onCommand:git.pushWithPreview"
+	],
+	"main": "./src/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "git.pushWithPreview",
+				"title": "Push w/preview",
+				"category": "Git"
+			}
+		],
+		"menus": {
+			"commandPalette": [
+				{
+					"command": "git.pushWithPreview",
+					"when": "config.git.enabled && !git.missing && gitOpenRepositoryCount != 0"
+				}
+			],
+			"scm/title": [
+				{
+					"command": "git.pushWithPreview",
+					"group": "1_header@2",
+					"when": "scmProvider == git"
+				}
+			],
+			"git.pullpush": [
+				{
+					"command": "git.pushWithPreview",
+					"group": "3_push@1"
+				}
+			]
+		}
+	},
+	"scripts": {},
+	"devDependencies": {
+		"@types/vscode": "^1.34.0"
+	}
+}
