@@ -57,7 +57,9 @@
 			]
 		}
 	},
-	"scripts": {},
+	"scripts": {
+    "publish": "vsce publish minor"
+  },
 	"devDependencies": {
 		"@types/vscode": "^1.32.0"
 	}
