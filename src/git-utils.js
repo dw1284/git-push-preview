@@ -14,7 +14,7 @@ const getUnpushedCommits = async function(remoteName) {
   const currentRemoteName = remoteName || await getCurrentRemoteName();
   const currentBranchIsTracked = await _currentBranchIsTracked();
   const unpushedCommitLog = currentBranchIsTracked
-    ? await _runCommand('git', ['log', '@{u}', '-z', '--name-status', '--parents'])
+    ? await _runCommand('git', ['log', '@{u}..', '-z', '--name-status', '--parents'])
     : await _runCommand('git', ['log', 'HEAD', '--not', `--remotes=${currentRemoteName}`, '-z', '--name-status', '--parents']);
   return _parseCommits(unpushedCommitLog);
 };
