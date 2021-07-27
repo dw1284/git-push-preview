@@ -26,8 +26,12 @@ const getFileAtRevision = async function(revision, path) {
 };
 
 const _currentBranchIsTracked = async function() {
-  const output = await _runCommand('git', ['checkout']);
-  return output.length > 0;
+  try {
+    await _runCommand('git', ['rev-parse', '--abbrev-ref', '@{u}']); // This fails if branch has no upstream connection
+    return true;
+  } catch {
+    return false;
+  }
 };
 
 const _runCommand = async function(cmdText, args) {
