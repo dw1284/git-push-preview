@@ -45,23 +45,23 @@ const _runCommand = async function(cmdText, args) {
 };
 
 const _parseCommits = function(commitLog) {
-  return commitLog.split(/\0\0/g).map(chunk => {
+  return commitLog.split(/\0commit\s|^commit\s/g).slice(1).map(chunk => {
     const parts = chunk.split(/\n\n/g);
-    const hashes = parts[0].match(/(commit\s)(.+?)(\n)/)[2].split(' ');
+    const hashes = parts[0].match(/(^.+?)(\n)/)[1].split(' ');
     return {
       hash: hashes[0],
       parentHash: hashes[1],
       author: parts[0].match(/(Author:\s)(.+?)(\n)/)[2],
       date: new Date(parts[0].match(/(Date:\s+)(.+)$/)[2]),
       message: parts[1].trim().replace('\n', '').replace('   ', ''),
-      files: parts[2].match(/[ACDMRTUXB]\0.+?(?:\0|$)/g).map(file => {
+      files: parts[2]?.match(/[ACDMRTUXB]\0.+?(?:\0|$)/g)?.map(file => {
         return {
           status: file.slice(0, 1),
           path: file.slice(2).replace('\0', ''),
           hash: hashes[0],
           parentHash: hashes[1]
         }
-      })
+      }) || []
     }
   });
 };
