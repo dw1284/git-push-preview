@@ -16,7 +16,9 @@ const getUnpushedCommits = async function(remoteName) {
   const unpushedCommitLog = currentBranchIsTracked
     ? await _runCommand('git', ['log', '@{u}..', '-z', '--name-status', '--parents'])
     : await _runCommand('git', ['log', 'HEAD', '--not', `--remotes=${currentRemoteName}`, '-z', '--name-status', '--parents']);
-  return _parseCommits(unpushedCommitLog);
+  return unpushedCommitLog !== ''
+    ? _parseCommits(unpushedCommitLog)
+    : [];
 };
 
 const getFileAtRevision = async function(revision, path) {
