@@ -162,17 +162,22 @@
   
   function renderCommitInfo(commit) {
     const commitInfoContainer = document.querySelector('commit-info');
-    const commitInfoTemplate = document.getElementById('commit-info-template');
-    const commitInfoElement = commitInfoTemplate.content.cloneNode(true);
     
     removeAllChildren(commitInfoContainer);
     
     if (commit.hash) {
+      const commitInfoTemplate = document.getElementById('commit-info-template');
+      const commitInfoElement = commitInfoTemplate.content.cloneNode(true);
       const commitDate = new Date(commit.date);
       commitInfoElement.querySelector('message').textContent = commit.message;
       commitInfoElement.querySelector('author').textContent = commit.author;
       commitInfoElement.querySelector('date').textContent = `${commitDate.toLocaleDateString()} ${commitDate.toLocaleTimeString()}`;
       commitInfoContainer.appendChild(commitInfoElement);
+    } else {
+      const emptyCommitInfoElement = document.createElement('div');
+      emptyCommitInfoElement.style = 'display: flex; align-items: center; justify-content: center; height: 100%; width: 100%;';
+      emptyCommitInfoElement.textContent = 'No commit selected';
+      commitInfoContainer.appendChild(emptyCommitInfoElement);
     }
   }
   
