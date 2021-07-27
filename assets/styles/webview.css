@@ -138,6 +138,7 @@ commit-info {
   padding: 5px;
   padding-right: 25px;
   border: 1px groove gray;
+  overflow-y: auto;
 }
 
 commit-info message {
