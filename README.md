@@ -8,6 +8,8 @@ Custom extension for Visual Studio Code. Preview your local commits before pushi
 
 Install from vscode marketplace [git-push-preview](https://marketplace.visualstudio.com/items?itemName=dw1284.git-push-preview).
 
+Requires **Git 2.22** or greater be installed
+
 ## Usage
 
 New menu entry **Git Push w/preview** is generally available anytime the native Git Push entry is visible:
