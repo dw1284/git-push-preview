@@ -4,24 +4,24 @@
 	"version": "0.0.1",
 	"publisher": "dw1284",
 	"repository": {
-    "type": "git",
-    "url": "https://github.com/dw1284/git-push-preview.git"
-  },
-  "homepage": "https://github.com/dw1284/git-push-preview/blob/master/README.md",
+		"type": "git",
+		"url": "https://github.com/dw1284/git-push-preview.git"
+	},
+	"homepage": "https://github.com/dw1284/git-push-preview/blob/master/README.md",
 	"engines": {
 		"vscode": "^1.32.0"
 	},
-  "categories": [
-    "SCM Providers",
-    "Other"
-  ],
-  "keywords": [
-    "Git",
-    "Push",
-    "Preview",
-    "Commit",
-    "Commits"
-  ],
+	"categories": [
+		"SCM Providers",
+		"Other"
+	],
+	"keywords": [
+		"Git",
+		"Push",
+		"Preview",
+		"Commit",
+		"Commits"
+	],
 	"activationEvents": [
 		"onCommand:git.pushWithPreview"
 	],
@@ -58,6 +58,6 @@
 	},
 	"scripts": {},
 	"devDependencies": {
-		"@types/vscode": "^1.34.0"
+		"@types/vscode": "^1.32.0"
 	}
 }
