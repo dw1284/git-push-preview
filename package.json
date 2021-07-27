@@ -2,7 +2,7 @@
 	"name": "git-push-preview",
 	"displayName": "Git Push Preview",
 	"description": "Preview your commits before pushing to remote",
-	"version": "0.6.0",
+	"version": "0.7.0",
 	"publisher": "dw1284",
 	"repository": {
 		"type": "git",
