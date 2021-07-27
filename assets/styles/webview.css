@@ -15,6 +15,7 @@ commits {
   display: flex;
   flex-direction: column;
   border: 1px groove gray;
+  min-width: 230px;
   max-width: 350px;
   overflow-y: auto;
 }
