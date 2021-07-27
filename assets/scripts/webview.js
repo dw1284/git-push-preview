@@ -6,20 +6,11 @@
   const {currentBranchName} = await postMessage('getCurrentBranchName');
   const {unpushedCommits} = await postMessage('getUnpushedCommits');
   
-  // This creates the entry at the very top of our commits list which rolls all of
-  // the commits up into a single item so the user can see all file changes at once
+  // This creates an entry at the very top of our commits list which rolls all of the
+  // file changes up into a single commit so the user can see everything in one tree
   const headCommit = {
     message: `${currentBranchName} → ${currentRemoteName} : ${currentBranchName}`,
-    files: unpushedCommits.reduce((accumulator, commit) => {
-      commit.files.forEach(file => {
-        const existingItem = accumulator.find(i => i.path === file.path);
-        if (existingItem)
-          existingItem.parentHash = file.parentHash;
-        else
-          accumulator.push(Object.assign({}, file));
-      });
-      return accumulator;
-    }, [])
+    files: rollupChanges(unpushedCommits)
   };
   
   // Add the headCommit to the rest of our commits at the front of the array
@@ -66,49 +57,6 @@
         commitElement.classList.remove('selected');
       }
     });
-  }
-  
-  function createTree(workspaceName, files) {
-    const nodes = files.reduce((accumulator, file) => {
-      const segments = file.path.split('/');
-      let currNode = accumulator[0];
-      let prevNode;
-      
-      segments.forEach((segment, index) => {
-        prevNode = currNode;
-        currNode = prevNode.items.find(node => node.name === segment);
-        if (!currNode) {
-          const newNode = {name: segment, type: (segments.length === index+1) ? 'file' : 'folder'};
-          if (newNode.type === 'folder')
-            newNode.items = [];
-          else
-            Object.assign(newNode, file);
-          prevNode.items.push(newNode);
-          currNode = newNode;
-        }
-      });
-      
-      return accumulator;
-    }, [{name: workspaceName, type: 'folder', items: []}]);
-    
-    nodes[0].items = condenseTreePaths(nodes[0].items);
-    
-    return nodes;
-  }
-  
-  function condenseTreePaths(nodes) {
-    return nodes.reduce((accumulator, node) => {
-      if (node.type === 'folder' && node.items.length === 1) {
-        const condensee = node.items[0];
-        if (condensee.type === 'folder') {
-          condenseTreePaths(node.items);
-          node.name = `${node.name}/${condensee.name}`;
-          node.items = condensee.items;
-        }
-      }
-      accumulator.push(node);
-      return accumulator;
-    }, []);
   }
   
   function renderCommits(commits) {
@@ -179,6 +127,82 @@
       emptyCommitInfoElement.textContent = 'No commit selected';
       commitInfoContainer.appendChild(emptyCommitInfoElement);
     }
+  }
+  
+  function rollupChanges(commits) {
+    // Takes a batch of commits and rolls all of the file changes together into one batch of file changes
+    return commits.reduce((accumulator, commit) => {
+      commit.files.forEach(file => {
+        const existingItem = accumulator.slice().reverse().find(i => i.path === file.path);
+        if (existingItem) {
+          // Handle all of the possible collisions and offsets
+          if (existingItem.status === 'D' && file.status === 'A') {
+            // Remove the Add because it was offset by a Delete (don't insert the Delete either)
+            accumulator = accumulator.filter(item => item !== existingItem);
+          } else if (existingItem.status === 'M' && file.status === 'A') {
+            // Roll the Modify into the Add
+            existingItem.parentHash = file.parentHash;
+            existingItem.status = file.status;
+          } else if (existingItem.status === 'A' && file.status === 'D') {
+            // File was deleted and then added back (show both)
+            accumulator.push(Object.assign({}, file));
+          } else if (existingItem.status === 'D' && file.status === 'M') {
+            // Roll the Modify into the Delete
+            existingItem.parentHash = file.parentHash;
+          } else if (existingItem.status === 'M' && file.status === 'M') {
+            // Roll the Modify into the Modify
+            existingItem.parentHash = file.parentHash;
+          }
+        }
+        else {
+          accumulator.push(Object.assign({}, file));
+        }
+      });
+      return accumulator;
+    }, []);
+  }
+  
+  function createTree(workspaceName, files) {
+    const nodes = files.reduce((accumulator, file) => {
+      const segments = file.path.split('/');
+      let currNode = accumulator[0];
+      let prevNode;
+      
+      segments.forEach((segment, index) => {
+        prevNode = currNode;
+        currNode = prevNode.items.find(node => node.name === segment);
+        if (!currNode || currNode.type === 'file') {
+          const newNode = {name: segment, type: (segments.length === index+1) ? 'file' : 'folder'};
+          if (newNode.type === 'folder')
+            newNode.items = [];
+          else
+            Object.assign(newNode, file);
+          prevNode.items.push(newNode);
+          currNode = newNode;
+        }
+      });
+      
+      return accumulator;
+    }, [{name: workspaceName, type: 'folder', items: []}]);
+    
+    nodes[0].items = condenseTreePaths(nodes[0].items);
+    
+    return nodes;
+  }
+  
+  function condenseTreePaths(nodes) {
+    return nodes.reduce((accumulator, node) => {
+      if (node.type === 'folder' && node.items.length === 1) {
+        const condensee = node.items[0];
+        if (condensee.type === 'folder') {
+          condenseTreePaths(node.items);
+          node.name = `${node.name}/${condensee.name}`;
+          node.items = condensee.items;
+        }
+      }
+      accumulator.push(node);
+      return accumulator;
+    }, []);
   }
   
   function removeAllChildren(htmlEle) {
