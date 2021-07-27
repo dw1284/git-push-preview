@@ -3,10 +3,25 @@
 	"description": "Preview your commits before pushing to remote",
 	"version": "0.0.1",
 	"publisher": "dw1284",
-	"repository": "https://github.com/dw1284/git-push-preview",
+	"repository": {
+    "type": "git",
+    "url": "https://github.com/dw1284/git-push-preview.git"
+  },
+  "homepage": "https://github.com/dw1284/git-push-preview/blob/master/README.md",
 	"engines": {
 		"vscode": "^1.32.0"
 	},
+  "categories": [
+    "SCM Providers",
+    "Other"
+  ],
+  "keywords": [
+    "Git",
+    "Push",
+    "Preview",
+    "Commit",
+    "Commits"
+  ],
 	"activationEvents": [
 		"onCommand:git.pushWithPreview"
 	],

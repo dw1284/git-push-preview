@@ -1,21 +1,24 @@
-# Hello World Minimal Sample
+# Git Push Preview
 
-This is a minimal version of the [Hello World Sample](../helloworld-sample).
+Custom extension for Visual Studio Code. Preview your local commits before pushing to remote. Very similar to IntelliJ Idea's push preview panel.
 
-It does not use TypeScript and only includes the `vscode` devDependency needed for extension development.
+> Project site: [git-push-preview](https://github.com/dw1284/git-push-preview)
 
-## VS Code API
+## Installation
 
-### `vscode` module
+Install from vscode marketplace [git-push-preview](https://marketplace.visualstudio.com/items?itemName=dw1284.git-push-preview).
 
-- [`commands.registerCommand`](https://code.visualstudio.com/api/references/vscode-api#commands.registerCommand)
-- [`window.showInformationMessage`](https://code.visualstudio.com/api/references/vscode-api#window.showInformationMessage)
+## Usage
 
-### Contribution Points
+New menu entry **Git Push w/preview** is generally available anytime the native Git Push entry is visible:
 
-- [`contributes.commands`](https://code.visualstudio.com/api/references/contribution-points#contributes.commands)
+![demo](assets/images/demo.gif)
 
-## Running the Sample
+## Features
 
-- Run `npm install` in terminal to install dependencies
-- Run the `Run Extension` target in the Debug View.
+- Tree list of your entire commit stack to easily view all file changes
+- Easily launch a diff for any file in any commit in the tree
+
+---
+
+**Note:** This project was created for my own convenience. It does what I need it to do, and I do not plan on spending a ton of time on it. It does not handle all branching/merging scenarios, nor does it support all types of changes that can occur to a file. You are welcome to try it and see if it does what you want.
